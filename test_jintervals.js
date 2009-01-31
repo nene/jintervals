@@ -165,6 +165,13 @@ test("combinations", function() {
   equals(interval("000 05:12:00", "{hours} and {minutes"), "5 hours and ?");
 });
 
+test("localization", function() {
+  equals(jintervals.locale(), "en_US");
+  equals(jintervals.locale("et_EE"), "et_EE");
+  equals(jintervals.locale(), "et_EE");
+  equals(jintervals.locale("en_US"), "en_US");
+});
+
 test("estonian locale", function() {
   jintervals.locale("et_EE");
   equals(interval("000 00:00:05", "{s.}"), "5s");
