@@ -1,4 +1,22 @@
 /**
+ * Copyright (c) 2009 Rene Saarsoo
+ *
+ * This file is part of jintervals.
+ *
+ * jintervals is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published
+ * by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ *
+ * jintervals is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with jintervals. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * 
  * jintervals -- JavaScript intervals
  * 
  * {Y} -- nr of years (0...)
@@ -33,17 +51,17 @@
  * 
  * ? - display item only when greater than zero.
  * 
- * You should start a scentence with an uppercase letter.  This is right:
+ * You should start a scentence with an uppercase letter. This is right:
  * 
- *   interval(60*90+15, "{Minutes} {seconds}") --> "90 minutes 15 seconds"
+ * interval(60*90+15, "{Minutes} {seconds}") --> "90 minutes 15 seconds"
  * 
  * But this is wrong:
  * 
- *   interval(60*90+15, "{minutes} {Seconds}") --> "30 minutes 5415 seconds"
+ * interval(60*90+15, "{minutes} {Seconds}") --> "30 minutes 5415 seconds"
  *
  * Ultimate example:
  * 
- *   {HHours?}
+ * {HHours?}
  * 
  */
 var jintervals = (function() {
