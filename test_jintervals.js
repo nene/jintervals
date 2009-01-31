@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009 Rene Saarsoo
+ * Copyright (c) 2009 Rene Saarsoo <http://code.google.com/p/jintervals/>
  *
  * This file is part of jintervals.
  *
