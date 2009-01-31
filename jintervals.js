@@ -169,6 +169,23 @@ var jintervals = (function() {
       plural: function(nr) {
         return (nr == 1) ? 0 : 1;
       }
+    },
+    et_EE: {
+      letter: {
+        d: "p",
+        h: "t",
+        m: "m",
+        s: "s"
+      },
+      full: {
+        d: [" p\u00E4ev", " p\u00E4eva"],
+        h: [" tund", " tundi"],
+        m: [" minut", " minutit"],
+        s: [" sekund", " sekundit"]
+      },
+      plural: function(nr) {
+        return (nr == 1) ? 0 : 1;
+      }
     }
   };
   

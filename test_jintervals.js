@@ -165,4 +165,24 @@ test("combinations", function() {
   equals(interval("000 05:12:00", "{hours} and {minutes"), "5 hours and ?");
 });
 
+test("estonian locale", function() {
+  jintervals.currentLocale = "et_EE";
+  equals(interval("000 00:00:05", "{s.}"), "5s");
+  equals(interval("000 00:00:01", "{seconds}"), "1 sekund");
+  equals(interval("000 00:00:05", "{seconds}"), "5 sekundit");
+  
+  equals(interval("000 00:05:00", "{m.}"), "5m");
+  equals(interval("000 00:01:00", "{minutes}"), "1 minut");
+  equals(interval("000 00:05:00", "{minutes}"), "5 minutit");
+  
+  equals(interval("000 05:00:00", "{h.}"), "5t");
+  equals(interval("000 01:00:00", "{hours}"), "1 tund");
+  equals(interval("000 05:00:00", "{hours}"), "5 tundi");
+  
+  equals(interval("005 00:00:00", "{d.}"), "5p");
+  equals(interval("001 00:00:00", "{days}"), "1 p\u00E4ev");
+  equals(interval("005 00:00:00", "{days}"), "5 p\u00E4eva");
+  jintervals.currentLocale = "en_US";
+});
+
 
