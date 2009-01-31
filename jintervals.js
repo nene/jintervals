@@ -86,18 +86,24 @@ var jintervals = (function() {
     return zeropad(value, paddingLength) + suffix + optionalSuffix;
   }
   
-  var units = {
-    letter: {
-      d: "d",
-      h: "h",
-      m: "m",
-      s: "s"
-    },
-    full: {
-      d: [" day", " days"],
-      h: [" hour", " hours"],
-      m: [" minute", " minutes"],
-      s: [" second", " seconds"]
+  var currentLocale = "en_US";
+  var locales = {
+    en_US: {
+      letter: {
+        d: "d",
+        h: "h",
+        m: "m",
+        s: "s"
+      },
+      full: {
+        d: [" day", " days"],
+        h: [" hour", " hours"],
+        m: [" minute", " minutes"],
+        s: [" second", " seconds"]
+      },
+      plural: function(nr) {
+        return (nr == 1) ? 0 : 1;
+      }
     }
   };
   
@@ -108,10 +114,11 @@ var jintervals = (function() {
       return "";
     }
     else if (suffixType == ".") {
-      return units.letter[lcType];
+      return locales[currentLocale].letter[lcType];
     }
     else {
-      return (value == 1) ? units.full[lcType][0] : units.full[lcType][1];
+      var pluralForm = locales[currentLocale].plural(value);
+      return locales[currentLocale].full[lcType][pluralForm];
     }
   }
 
