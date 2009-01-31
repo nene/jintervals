@@ -86,11 +86,19 @@ var jintervals = (function() {
     return zeropad(value, paddingLength) + suffix + optionalSuffix;
   }
   
-  var suffixes = {
-    d: ["d", " day", " days"],
-    h: ["h", " hour", " hours"],
-    m: ["m", " minute", " minutes"],
-    s: ["s", " second", " seconds"]
+  var units = {
+    letter: {
+      d: "d",
+      h: "h",
+      m: "m",
+      s: "s"
+    },
+    full: {
+      d: [" day", " days"],
+      h: [" hour", " hours"],
+      m: [" minute", " minutes"],
+      s: [" second", " seconds"]
+    }
   };
   
   function getSuffix(suffixType, type, value) {
@@ -100,10 +108,10 @@ var jintervals = (function() {
       return "";
     }
     else if (suffixType == ".") {
-      return suffixes[lcType][0];
+      return units.letter[lcType];
     }
     else {
-      return (value == 1) ? suffixes[lcType][1] : suffixes[lcType][2];
+      return (value == 1) ? units.full[lcType][0] : units.full[lcType][1];
     }
   }
 
