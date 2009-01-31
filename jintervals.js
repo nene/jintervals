@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2009 Rene Saarsoo
+ * Copyright (c) 2009 Rene Saarsoo <http://code.google.com/p/jintervals/>
  *
- * This file is part of jintervals.
+ * jintervals -- JavaScript library for interval formatting
  *
  * jintervals is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published
@@ -16,53 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with jintervals. If not, see <http://www.gnu.org/licenses/>.
  *
- * 
- * jintervals -- JavaScript intervals
- * 
- * {Y} -- nr of years (0...)
- * {D} -- nr of days (0...)
- * {H} -- nr of hours (0...)
- * {M} -- nr of minutes (0...)
- * {S} -- nr of seconds (0...)
- * 
- * {y} -- nr of years (0...)
- * {d} -- nr of days (0..365)
- * {h} -- nr of hours (0..23)
- * {m} -- nr of minutes (0..59)
- * {s} -- nr of seconds (0..59)
- * 
- * {hh} -- nr of hours (00..23)
- * {mm} -- nr of minutes (00..59)
- * {ss} -- nr of seconds (00..59)
- * 
- * {y.} -- nr of years (0y...)
- * {d.} -- nr of days (0d..365d)
- * {h.} -- nr of hours (0h..23h)
- * {m.} -- nr of minutes (0m..59m)
- * {s.} -- nr of seconds (0s..59s)
- * 
- * {years} -- nr of years (0 years ...)
- * {days} -- nr of days (0 days .. 365 days)
- * {hours} -- nr of hours (0 hours .. 23 hours)
- * {minutes} -- nr of minutes (0 minutes .. 59 minutes)
- * {seconds} -- nr of seconds (0 seconds .. 59 seconds)
- * 
- * Modifiers:
- * 
- * ? - display item only when greater than zero.
- * 
- * You should start a scentence with an uppercase letter. This is right:
- * 
- * interval(60*90+15, "{Minutes} {seconds}") --> "90 minutes 15 seconds"
- * 
- * But this is wrong:
- * 
- * interval(60*90+15, "{minutes} {Seconds}") --> "30 minutes 5415 seconds"
- *
- * Ultimate example:
- * 
- * {HHours?}
- * 
  */
 var jintervals = (function() {
   // utility function to pad number with leading zeros
