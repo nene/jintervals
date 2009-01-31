@@ -101,16 +101,16 @@ var jintervals = (function() {
   }
   
   function getLetterSuffix(lcType) {
-    return main.locales[main.currentLocale].letter[lcType];
+    return locales[currentLocale].letter[lcType];
   }
                     
   function getFullSuffix(lcType, value) {
-    var unit = main.locales[main.currentLocale];
+    var unit = locales[currentLocale];
     var pluralForm = unit.plural(value);
     return unit.full[lcType][pluralForm];
   }
 
-  function main(seconds, format) {
+  function jintervals(seconds, format) {
     // precalculate all different intervals we might need
     var t = {};
     t.D = Math.floor(seconds / (60*60*24));
@@ -151,8 +151,7 @@ var jintervals = (function() {
     return result;
   };
       
-  main.currentLocale = "en_US";
-  main.locales = {
+  var locales = {
     en_US: {
       letter: {
         d: "d",
@@ -189,7 +188,17 @@ var jintervals = (function() {
     }
   };
   
-  return main;
+  var currentLocale = "en_US";
+  
+  // Changing and getting current locale
+  jintervals.locale = function(loc) {
+    if (loc) {
+      currentLocale = loc;
+    }
+    return currentLocale;
+  };
+  
+  return jintervals;
 })();
 
 

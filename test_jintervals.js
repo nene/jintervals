@@ -166,7 +166,7 @@ test("combinations", function() {
 });
 
 test("estonian locale", function() {
-  jintervals.currentLocale = "et_EE";
+  jintervals.locale("et_EE");
   equals(interval("000 00:00:05", "{s.}"), "5s");
   equals(interval("000 00:00:01", "{seconds}"), "1 sekund");
   equals(interval("000 00:00:05", "{seconds}"), "5 sekundit");
@@ -182,7 +182,7 @@ test("estonian locale", function() {
   equals(interval("005 00:00:00", "{d.}"), "5p");
   equals(interval("001 00:00:00", "{days}"), "1 p\u00E4ev");
   equals(interval("005 00:00:00", "{days}"), "5 p\u00E4eva");
-  jintervals.currentLocale = "en_US";
+  jintervals.locale("en_US");
 });
 
 
