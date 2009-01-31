@@ -1,6 +1,4 @@
 /**
- * Copyright (c) 2009 Rene Saarsoo <http://code.google.com/p/jintervals/>
- *
  * jintervals -- JavaScript library for interval formatting
  *
  * jintervals is free software: you can redistribute it and/or modify
@@ -15,6 +13,8 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with jintervals. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Copyright (c) 2009 Rene Saarsoo <http://code.google.com/p/jintervals/>
  *
  */
 var jintervals = (function() {
