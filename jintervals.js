@@ -86,27 +86,6 @@ var jintervals = (function() {
     return zeropad(value, paddingLength) + suffix + optionalSuffix;
   }
   
-  var currentLocale = "en_US";
-  var locales = {
-    en_US: {
-      letter: {
-        d: "d",
-        h: "h",
-        m: "m",
-        s: "s"
-      },
-      full: {
-        d: [" day", " days"],
-        h: [" hour", " hours"],
-        m: [" minute", " minutes"],
-        s: [" second", " seconds"]
-      },
-      plural: function(nr) {
-        return (nr == 1) ? 0 : 1;
-      }
-    }
-  };
-  
   function getSuffix(suffixType, type, value) {
     var lcType = type.toLowerCase();
     
@@ -114,15 +93,24 @@ var jintervals = (function() {
       return "";
     }
     else if (suffixType == ".") {
-      return locales[currentLocale].letter[lcType];
+      return getLetterSuffix(lcType);
     }
     else {
-      var pluralForm = locales[currentLocale].plural(value);
-      return locales[currentLocale].full[lcType][pluralForm];
+      return getFullSuffix(lcType, value);
     }
   }
+  
+  function getLetterSuffix(lcType) {
+    return main.locales[main.currentLocale].letter[lcType];
+  }
+                    
+  function getFullSuffix(lcType, value) {
+    var unit = main.locales[main.currentLocale];
+    var pluralForm = unit.plural(value);
+    return unit.full[lcType][pluralForm];
+  }
 
-  return function(seconds, format) {
+  function main(seconds, format) {
     // precalculate all different intervals we might need
     var t = {};
     t.D = Math.floor(seconds / (60*60*24));
@@ -162,6 +150,29 @@ var jintervals = (function() {
     
     return result;
   };
+      
+  main.currentLocale = "en_US";
+  main.locales = {
+    en_US: {
+      letter: {
+        d: "d",
+        h: "h",
+        m: "m",
+        s: "s"
+      },
+      full: {
+        d: [" day", " days"],
+        h: [" hour", " hours"],
+        m: [" minute", " minutes"],
+        s: [" second", " seconds"]
+      },
+      plural: function(nr) {
+        return (nr == 1) ? 0 : 1;
+      }
+    }
+  };
+  
+  return main;
 })();
 
 
