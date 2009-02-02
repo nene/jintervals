@@ -1,5 +1,55 @@
 <?xml version="1.0" encoding="UTF-8" ?> 
 <Module>
   <ModulePrefs title="hello world example" /> 
-  <Content type="url" href="http://jintervals.googlecode.com/svn/trunk/gadget-page.html" />
+  <Content type="html">
+    <![CDATA[ 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>jintervals gadget</title>
+  <script type="text/javascript" src="http://jintervals.googlecode.com/svn/trunk/jquery.js"></script>
+  <script type="text/javascript" src="http://jintervals.googlecode.com/svn/trunk/jintervals.js"></script>
+  <script type="text/javascript">
+    $(function(){
+
+    function toSeconds(time) {
+      var t = /^ *(\d*) +(\d*) *: *(\d*) *: *(\d*) *$/.exec(time);
+      if (!t) {
+        return 0;
+      }
+      var d = t[1] || 0;
+      var h = t[2] || 0;
+      var m = t[3] || 0;
+      var s = t[4] || 0;
+      return s*1 + m*60 + h*60*60 + d*60*60*24;
+    }
+
+    $("input").keyup(function() {
+      var seconds = toSeconds($("input[@name=interval]").val());
+      var format = $("input[@name=format]").val();
+      $("samp").text(jintervals(seconds, format));
+    });
+    
+    });
+  </script>
+  <style type="text/css">
+    p.input code {font-weight: bold; font-size: 1em;}
+    input { font-family: monospace; }
+    input[name="interval"] { width: 8em }
+    input[name="format"] { width: 25em }
+    samp {font-weight: bold; font-size: 1em;}
+  </style>
+</head>
+<body>
+  
+  <p class="input"><code>jintervals(<input type="text" name="interval" value="005 12:32:05" />,
+    &quot;<input type="text" name="format" value="{ddd} {hh}:{mm}:{ss}" />&quot;);</code></p>
+  <p class="output">Output: <samp>000 12:32:05</samp></p>
+  
+</body>
+</html>
+     ]]>
+  </Content>
 </Module>
