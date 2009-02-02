@@ -1,17 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?> 
 <Module>
   <ModulePrefs title="hello world example" /> 
-  <Content type="html">
-     <![CDATA[
-<style type="text/css">
-  input { font-family: monospace; }
-  input[name="interval"] { width: 8em }
-</style>
-
-<p class="input"><code>jintervals(</code><input type="text" name="interval" value="005 12:32:05" /><code>,
-</code><input type="text" name="format" value="{ddd} {hh}:{mm}:{ss}" /><code>);</code></p>
-<p class="output">Output: <samp>00 12:32:05</samp></p>
-
-     ]]>
-  </Content> 
+  <Content type="url" href="http://jintervals.googlecode.com/svn/trunk/gadget-page.html" />
 </Module>
