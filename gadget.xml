@@ -46,7 +46,7 @@
   
   <p class="input"><code>jintervals(<input type="text" name="interval" value="005 12:32:05" />,
     &quot;<input type="text" name="format" value="{Days} {hh}:{mm}:{ss}" />&quot;);</code></p>
-  <p class="output">Output: <samp>000 12:32:05</samp></p>
+  <p class="output">Output: <samp>5 days 12:32:05</samp></p>
   
 </body>
 </html>
