@@ -112,9 +112,14 @@ test("{Greatests}", function() {
   equals(interval("001 00:00:00", "{Greatests}"), "1 day");
   equals(interval("365 00:00:00", "{Greatests}"), "365 days");
   
+  // check that abbreviations work
   equals(interval("000 03:00:00", "{G.}"), "3h");
   
+  // whis works too, although not very useful
   equals(interval("000 03:00:00", "{G}"), "3");
+  
+  // works with both upper- and lowercase
+  equals(interval("000 03:00:00", "{g}"), "3");
 });
 
 test("nr of decimal places", function() {
