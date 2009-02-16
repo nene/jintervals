@@ -158,6 +158,14 @@ test("unit names", function() {
   equals(interval("002 00:00:00", "{days}"), "2 days");
 });
 
+test("unit names in singular form", function() {
+  equals(interval("000 00:00:02", "{second}"), "2 seconds");
+  equals(interval("000 00:02:00", "{minute}"), "2 minutes");
+  equals(interval("000 02:00:00", "{hour}"), "2 hours");
+  equals(interval("002 00:00:00", "{day}"), "2 days");
+  equals(interval("002 00:00:00", "{greatest}"), "2 days");
+});
+
 test("optionality modifier", function() {
   equals(interval("000 00:00:00", "{h?}"), "");
   equals(interval("000 00:12:00", "{h?}"), "");

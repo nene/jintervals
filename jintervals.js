@@ -37,7 +37,7 @@ var jintervals = (function() {
   // interprets a single interval code -- the text between { and }
   // returns the corresponding value
   function evalCode(code, t) {
-    var re = /^[{]([smhdg])([smhdg]*)?(ays|ours|inutes|econds|reatests|\.)?(\?(.*))?[}]$/i;
+    var re = /^[{]([smhdg])([smhdg]*)?(ays?|ours?|inutes?|econds?|reatests?|\.)?(\?(.*))?[}]$/i;
     var matches = re.exec(code);
     if (!matches) {
       return "?";
