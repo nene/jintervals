@@ -37,13 +37,13 @@ var jintervals = (function() {
   // interprets a single interval code -- the text between { and }
   // returns the corresponding value
   function evalCode(code, t) {
-    var re = /^[{](s|m|h|d)(s*|m*|h*|d*)?(ays|ours|inutes|econds|\.)?(\?(.*))?[}]$/i;
+    var re = /^[{]([smhdg])([smhdg]*)?(ays|ours|inutes|econds|reatests|\.)?(\?(.*))?[}]$/i;
     var matches = re.exec(code);
     if (!matches) {
       return "?";
     }
     
-    var type = matches[1];
+    var type = (matches[1].toUpperCase() == "G") ? t.G : matches[1];
     var value = t.hasOwnProperty(type) ? t[type] : "?";
     var paddingLength = (matches[2] || "").length + 1;
     var suffix = getSuffix((matches[3] || ""), type, value);
@@ -93,6 +93,10 @@ var jintervals = (function() {
     t.m = t.M - (t.H*60);
     t.S = Math.floor(seconds);
     t.s = t.S - (t.M*60);
+    // Determine the name of greatest unit
+    t.G = t.d ? "d" : (t.h ? "h" : (t.m ? "m" : "s"));
+    t.g = t.G;
+    
     
     var unparsed = format;
     var result = "";

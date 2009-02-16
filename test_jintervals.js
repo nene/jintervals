@@ -101,6 +101,22 @@ test("{D}", function() {
   equals(interval("999 00:00:00", "{D}"), "999");
 });
 
+test("{Greatests}", function() {
+  equals(interval("000 00:00:00", "{Greatests}"), "0 seconds");
+  equals(interval("000 00:00:01", "{Greatests}"), "1 second");
+  equals(interval("000 00:00:59", "{Greatests}"), "59 seconds");
+  equals(interval("000 00:01:00", "{Greatests}"), "1 minute");
+  equals(interval("000 00:59:59", "{Greatests}"), "59 minutes");
+  equals(interval("000 01:00:00", "{Greatests}"), "1 hour");
+  equals(interval("000 23:59:59", "{Greatests}"), "23 hours");
+  equals(interval("001 00:00:00", "{Greatests}"), "1 day");
+  equals(interval("365 00:00:00", "{Greatests}"), "365 days");
+  
+  equals(interval("000 03:00:00", "{G.}"), "3h");
+  
+  equals(interval("000 03:00:00", "{G}"), "3");
+});
+
 test("nr of decimal places", function() {
   equals("|"+interval("001 00:00:00", "{dd}"), "|01");
   equals("|"+interval("011 00:00:00", "{dd}"), "|11");
