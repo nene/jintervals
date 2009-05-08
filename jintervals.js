@@ -148,7 +148,7 @@ var jintervals = (function() {
     et_EE: {
       letter: {
         d: "p",
-        h: "t",
+        h: "h",
         m: "m",
         s: "s"
       },

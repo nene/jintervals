@@ -232,7 +232,7 @@ test("estonian locale", function() {
   equals(interval("000 00:01:00", "{minutes}"), "1 minut");
   equals(interval("000 00:05:00", "{minutes}"), "5 minutit");
   
-  equals(interval("000 05:00:00", "{h.}"), "5t");
+  equals(interval("000 05:00:00", "{h.}"), "5h");
   equals(interval("000 01:00:00", "{hours}"), "1 tund");
   equals(interval("000 05:00:00", "{hours}"), "5 tundi");
   
