@@ -85,6 +85,7 @@ var jintervals = (function() {
    */
   var Interpreter = {
     evaluate: function(time, parseTree) {
+      var smallestUnit = this.smallestUnit(parseTree);
       var result = "";
       while ( parseTree.length > 0 ) {
         var code = parseTree.shift();
@@ -96,7 +97,7 @@ var jintervals = (function() {
         // evaluate the code
         else if (typeof code === "object") {
           var unit = (code.type == "G") ? time.getGreatestUnit() : code.type;
-          var value = time.get(unit, code.limited);
+          var value = time.get(unit, code.limited, unit === smallestUnit);
           var suffix = code.format ? Localization.translate(code.format, unit, value) : "";
           
           // show when not optional or totalvalue is non-zero
@@ -111,6 +112,35 @@ var jintervals = (function() {
         }
       }
       return result;
+    },
+    
+    /**
+     * Finds the smallest unit from parse tree.
+     * 
+     * For example when parse tree contains "d", "m", "h" then returns "m"
+     */
+    smallestUnit: function(parseTree) {
+      var unitOrder = {
+        "S": 0,
+        "M": 1,
+        "H": 2,
+        "D": 3
+      };
+      
+      var smallest = "D";
+      for (var i = 0; i < parseTree.length; i++) {
+        if (typeof parseTree[i] === "object") {
+          var type = parseTree[i].type;
+          if (type === "G") {
+            smallest = "S";
+          }
+          else if (unitOrder[type] < unitOrder[smallest]) {
+            smallest = type;
+          }
+        }
+      }
+      
+      return smallest;
     },
     
     // utility function to pad number with leading zeros
@@ -141,21 +171,48 @@ var jintervals = (function() {
      * 
      * @param {String} unit  Either "S", "M", "H" or "D"
      * @param {Boolean} limited  When true 67 seconds will become just 7 seconds (defaults to false)
+     * @param {Boolean} round  Use rounding instead of flooring (defaults to false)
      */
-    get: function(unit, limited) {
-      var type = limited ? unit.toLowerCase() : unit.toUpperCase();
-      switch (type) {
-        case "S": return this.seconds;
-        case "s": return this.seconds - this.get("M") * 60;
-        case "M": return Math.floor(this.get("S") / 60);
-        case "m": return this.get("M") - this.get("H") * 60;
-        case "H": return Math.floor(this.get("M") / 60);
-        case "h": return this.get("H") - this.get("D") * 24;
-        case "D": return Math.floor(this.get("H") / 24);
-        case "d": return this.get("D");
-        default: return "?";
+    get: function(unit, limited, round) {
+      if (!this[unit]) {
+        return "?";
+      }
+      return this[unit](limited, round);
+    },
+    
+    // functions for each unit
+    
+    S: function(limited, round) {
+      if (limited) {
+        return this.seconds - this.M() * 60;
+      }
+      else {
+        return this.seconds;
       }
     },
+    
+    M: function(limited, round) {
+      if (limited) {
+        return this.M() - this.H() * 60;
+      }
+      else {
+        return Math.floor(this.S() / 60);
+      }
+    },
+    
+    H: function(limited, round) {
+      if (limited) {
+        return this.H() - this.D() * 24;
+      }
+      else {
+        return Math.floor(this.M() / 60);
+      }
+    },
+    
+    D: function(limited, round) {
+      return Math.floor(this.H() / 24);
+    },
+    
     
     /**
      * Returns the name of greatest time unit.
