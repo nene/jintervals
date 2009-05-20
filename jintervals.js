@@ -20,21 +20,7 @@
  */
 var jintervals = (function() {
   function jintervals(seconds, format) {
-    // precalculate all different intervals we might need
-    var t = {};
-    t.D = Math.floor(seconds / (60*60*24));
-    t.d = t.D;
-    t.H = Math.floor(seconds / (60*60));
-    t.h = t.H - (t.D*24);
-    t.M = Math.floor(seconds / 60);
-    t.m = t.M - (t.H*60);
-    t.S = Math.floor(seconds);
-    t.s = t.S - (t.M*60);
-    // Determine the name of greatest unit
-    t.G = t.d ? "d" : (t.h ? "h" : (t.m ? "m" : "s"));
-    t.g = t.G;
-    
-    return Interpreter.evaluate(t, Parser.parse(format));
+    return Interpreter.evaluate(new Time(seconds), Parser.parse(format));
   };
       
   /**
@@ -81,7 +67,7 @@ var jintervals = (function() {
       }
       
       return {
-        type: matches[1],
+        type: matches[1].replace("g", "G"),
         paddingLength: (matches[2] || "").length + 1,
         format: (matches[3]||"") == "" ? false : (matches[3] == "." ? "letter" : "full"),
         optional: !!matches[4],
@@ -92,7 +78,7 @@ var jintervals = (function() {
   };
       
   /**
-   * Evaluates parse tree in the context of given time interval
+   * Evaluates parse tree in the context of given time object
    */
   var Interpreter = {
     evaluate: function(time, parseTree) {
@@ -106,12 +92,12 @@ var jintervals = (function() {
         
         // evaluate the code
         else if (typeof code === "object") {
-          var type = (code.type.toUpperCase() == "G") ? time.G : code.type;
-          var value = time.hasOwnProperty(type) ? time[type] : "?";
-          var suffix = code.format ? Localization.translate(code.format, type.toLowerCase(), value) : "";
+          var unit = (code.type == "G") ? time.getGreatestUnit() : code.type;
+          var value = time.get(unit);
+          var suffix = code.format ? Localization.translate(code.format, unit.toLowerCase(), value) : "";
           
           // show when not optional or totalvalue is non-zero
-          if (!code.optional || time[type.toUpperCase()] != 0) {
+          if (!code.optional || time.get(unit.toUpperCase()) != 0) {
             result += this.zeropad(value, code.paddingLength) + suffix + code.optionalSuffix;
           }
         }
@@ -140,6 +126,40 @@ var jintervals = (function() {
     }
   };
   
+  /**
+   * Time class that deals with the actual computation of time units.
+   */
+  var Time = function(s) {
+    this.seconds = s;
+  };
+  Time.prototype = {
+    /**
+     * Returns the value of given time unit
+     */
+    get: function(unit) {
+      switch (unit) {
+        case "S": return this.seconds;
+        case "s": return this.seconds - this.get("M") * 60;
+        case "M": return Math.floor(this.get("S") / 60);
+        case "m": return this.get("M") - this.get("H") * 60;
+        case "H": return Math.floor(this.get("M") / 60);
+        case "h": return this.get("H") - this.get("D") * 24;
+        case "D": return Math.floor(this.get("H") / 24);
+        case "d": return this.get("D");
+        default: return "?";
+      }
+    },
+    
+    /**
+     * Returns the name of greatest time unit.
+     * 
+     * For example when we have 2 hours, 30 minutes, and 7 seconds,
+     * then the greatest unit is hour and "h" is returned.
+     */
+    getGreatestUnit: function() {
+      return this.get("d") ? "d" : (this.get("h") ? "h" : (this.get("m") ? "m" : "s"));
+    }
+  };
   
   var Localization = {
     translate: function(format, lcType, value) {
