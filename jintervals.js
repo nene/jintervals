@@ -97,7 +97,8 @@ var jintervals = (function() {
         // evaluate the code
         else if (typeof code === "object") {
           var unit = (code.type == "G") ? time.getGreatestUnit() : code.type;
-          var value = time.get(unit, code.limited, unit === smallestUnit);
+          var smallest = (code.type == "G") ? unit : smallestUnit;
+          var value = time.get(unit, code.limited, smallest);
           var suffix = code.format ? Localization.translate(code.format, unit, value) : "";
           
           // show when not optional or totalvalue is non-zero
@@ -131,10 +132,7 @@ var jintervals = (function() {
       for (var i = 0; i < parseTree.length; i++) {
         if (typeof parseTree[i] === "object") {
           var type = parseTree[i].type;
-          if (type === "G") {
-            smallest = "S";
-          }
-          else if (unitOrder[type] < unitOrder[smallest]) {
+          if (type !== "G" && unitOrder[type] < unitOrder[smallest]) {
             smallest = type;
           }
         }
@@ -171,48 +169,43 @@ var jintervals = (function() {
      * 
      * @param {String} unit  Either "S", "M", "H" or "D"
      * @param {Boolean} limited  When true 67 seconds will become just 7 seconds (defaults to false)
-     * @param {Boolean} round  Use rounding instead of flooring (defaults to false)
+     * @param {String} smallest  The name of smallest unit.
      */
-    get: function(unit, limited, round) {
+    get: function(unit, limited, smallest) {
       if (!this[unit]) {
         return "?";
       }
-      return this[unit](limited, round);
+      return this[unit](limited, smallest);
     },
     
     // functions for each unit
     
-    S: function(limited, round) {
+    S: function(limited, smallest) {
+      return limited ? this.seconds - this.M(false, smallest) * 60 : this.seconds;
+    },
+    
+    M: function(limited, smallest) {
+      var minutes = this.seconds / 60;
+      minutes = (smallest === "M") ? Math.round(minutes): Math.floor(minutes);
       if (limited) {
-        return this.seconds - this.M() * 60;
+        minutes = minutes - this.H(false, smallest) * 60;
       }
-      else {
-        return this.seconds;
-      }
+      return minutes;
     },
     
-    M: function(limited, round) {
+    H: function(limited, smallest) {
+      var hours = this.M(false, smallest) / 60;
+      hours = (smallest === "H") ? Math.round(hours): Math.floor(hours);
       if (limited) {
-        return this.M() - this.H() * 60;
+        hours = hours - this.D(false, smallest) * 24;
       }
-      else {
-        return Math.floor(this.S() / 60);
-      }
+      return hours;
     },
     
-    H: function(limited, round) {
-      if (limited) {
-        return this.H() - this.D() * 24;
-      }
-      else {
-        return Math.floor(this.M() / 60);
-      }
+    D: function(limited, smallest) {
+      var days = this.H(false, smallest) / 24;
+      return (smallest === "D") ? Math.round(days): Math.floor(days);
     },
-    
-    D: function(limited, round) {
-      return Math.floor(this.H() / 24);
-    },
-    
     
     /**
      * Returns the name of greatest time unit.
@@ -221,7 +214,18 @@ var jintervals = (function() {
      * then the greatest unit is hour and "H" is returned.
      */
     getGreatestUnit: function() {
-      return this.get("D") ? "D" : (this.get("H") ? "H" : (this.get("M") ? "M" : "S"));
+      if (this.seconds < 60) {
+        return "S";
+      }
+      else if (this.M(false, "M") < 60) {
+        return "M";
+      }
+      else if (this.H(false, "H") < 24) {
+        return "H";
+      }
+      else {
+        return "D";
+      }
     }
   };
   

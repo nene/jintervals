@@ -47,19 +47,24 @@ test("{S}", function() {
 
 test("{m}", function() {
   equals(interval("000 00:00:00", "{m}"), "0");
-  equals(interval("000 00:00:59", "{m}"), "0");
+  equals(interval("000 00:00:29", "{m}"), "0");
+  equals(interval("000 00:00:30", "{m}"), "1");
+  equals(interval("000 00:00:59", "{m}"), "1");
   equals(interval("000 00:01:00", "{m}"), "1");
-  equals(interval("000 00:01:01", "{m}"), "1");
-  equals(interval("000 00:01:59", "{m}"), "1");
+  equals(interval("000 00:01:29", "{m}"), "1");
+  equals(interval("000 00:01:30", "{m}"), "2");
   equals(interval("000 00:02:00", "{m}"), "2");
-  equals(interval("000 00:59:59", "{m}"), "59");
+  equals(interval("000 00:59:29", "{m}"), "59");
+  equals(interval("000 00:59:30", "{m}"), "0");
   equals(interval("000 01:00:00", "{m}"), "0");
   equals(interval("000 01:15:00", "{m}"), "15");
   equals(interval("000 01:00:15", "{m}"), "0");
 });
 
 test("{M}", function() {
-  equals(interval("000 00:00:59", "{M}"), "0");
+  equals(interval("000 00:00:29", "{M}"), "0");
+  equals(interval("000 00:00:30", "{M}"), "1");
+  equals(interval("000 00:00:59", "{M}"), "1");
   equals(interval("000 00:59:00", "{M}"), "59");
   equals(interval("000 01:00:00", "{M}"), "60");
   equals(interval("000 01:15:00", "{M}"), "75");
@@ -67,36 +72,51 @@ test("{M}", function() {
 
 test("{h}", function() {
   equals(interval("000 00:00:00", "{h}"), "0");
-  equals(interval("000 00:59:59", "{h}"), "0");
+  equals(interval("000 00:29:59", "{h}"), "0");
+  equals(interval("000 00:30:00", "{h}"), "1");
+  equals(interval("000 00:59:59", "{h}"), "1");
   equals(interval("000 01:00:00", "{h}"), "1");
   equals(interval("000 01:01:00", "{h}"), "1");
-  equals(interval("000 01:59:59", "{h}"), "1");
+  equals(interval("000 01:29:59", "{h}"), "1");
+  equals(interval("000 01:30:00", "{h}"), "2");
+  equals(interval("000 01:59:59", "{h}"), "2");
   equals(interval("000 02:00:00", "{h}"), "2");
-  equals(interval("000 23:59:59", "{h}"), "23");
+  equals(interval("000 23:29:59", "{h}"), "23");
+  equals(interval("000 23:30:00", "{h}"), "0");
+  equals(interval("000 23:59:59", "{h}"), "0");
   equals(interval("001 00:00:00", "{h}"), "0");
   equals(interval("001 15:00:00", "{h}"), "15");
   equals(interval("001 00:15:00", "{h}"), "0");
 });
 
 test("{H}", function() {
-  equals(interval("000 00:59:59", "{H}"), "0");
-  equals(interval("000 23:59:59", "{H}"), "23");
+  equals(interval("000 00:29:59", "{H}"), "0");
+  equals(interval("000 00:30:00", "{H}"), "1");
+  equals(interval("000 00:59:59", "{H}"), "1");
+  equals(interval("000 23:30:00", "{H}"), "24");
+  equals(interval("000 23:59:59", "{H}"), "24");
   equals(interval("001 00:00:00", "{H}"), "24");
   equals(interval("001 12:00:00", "{H}"), "36");
 });
 
 test("{d}", function() {
   equals(interval("000 00:00:00", "{d}"), "0");
-  equals(interval("000 23:59:59", "{d}"), "0");
+  equals(interval("000 11:59:59", "{d}"), "0");
+  equals(interval("000 12:00:00", "{d}"), "1");
+  equals(interval("000 23:59:59", "{d}"), "1");
   equals(interval("001 00:00:00", "{d}"), "1");
   equals(interval("001 01:00:00", "{d}"), "1");
-  equals(interval("001 23:59:59", "{d}"), "1");
+  equals(interval("001 11:59:59", "{d}"), "1");
+  equals(interval("001 12:00:00", "{d}"), "2");
+  equals(interval("001 23:59:59", "{d}"), "2");
   equals(interval("002 00:00:00", "{d}"), "2");
   equals(interval("365 00:00:00", "{d}"), "365");
 });
 
 test("{D}", function() {
-  equals(interval("000 23:59:59", "{D}"), "0");
+  equals(interval("000 11:59:59", "{D}"), "0");
+  equals(interval("000 12:00:00", "{D}"), "1");
+  equals(interval("000 23:59:59", "{D}"), "1");
   equals(interval("001 00:00:00", "{D}"), "1");
   equals(interval("999 00:00:00", "{D}"), "999");
 });
@@ -104,18 +124,23 @@ test("{D}", function() {
 test("{Greatests}", function() {
   equals(interval("000 00:00:00", "{Greatests}"), "0 seconds");
   equals(interval("000 00:00:01", "{Greatests}"), "1 second");
+  equals(interval("000 00:00:30", "{Greatests}"), "30 seconds");
   equals(interval("000 00:00:59", "{Greatests}"), "59 seconds");
   equals(interval("000 00:01:00", "{Greatests}"), "1 minute");
-  equals(interval("000 00:59:59", "{Greatests}"), "59 minutes");
+  equals(interval("000 00:01:29", "{Greatests}"), "1 minute");
+  equals(interval("000 00:01:30", "{Greatests}"), "2 minutes");//
+  equals(interval("000 00:01:59", "{Greatests}"), "2 minutes");//
+  equals(interval("000 00:59:30", "{Greatests}"), "1 hour");//
   equals(interval("000 01:00:00", "{Greatests}"), "1 hour");
-  equals(interval("000 23:59:59", "{Greatests}"), "23 hours");
+  equals(interval("000 23:29:59", "{Greatests}"), "23 hours");
+  equals(interval("000 23:30:00", "{Greatests}"), "1 day");//
   equals(interval("001 00:00:00", "{Greatests}"), "1 day");
   equals(interval("365 00:00:00", "{Greatests}"), "365 days");
   
   // check that abbreviations work
   equals(interval("000 03:00:00", "{G.}"), "3h");
   
-  // whis works too, although not very useful
+  // this works too, although not very useful
   equals(interval("000 03:00:00", "{G}"), "3");
   
   // works with both upper- and lowercase
@@ -158,7 +183,7 @@ test("unit names", function() {
   equals(interval("002 00:00:00", "{days}"), "2 days");
 });
 
-test("unit names in singular form", function() {
+test("unit names in plural form", function() {
   equals(interval("000 00:00:02", "{second}"), "2 seconds");
   equals(interval("000 00:02:00", "{minute}"), "2 minutes");
   equals(interval("000 02:00:00", "{hour}"), "2 hours");
@@ -168,7 +193,7 @@ test("unit names in singular form", function() {
 
 test("optionality modifier", function() {
   equals(interval("000 00:00:00", "{h?}"), "");
-  equals(interval("000 00:12:00", "{h?}"), "");
+  equals(interval("000 00:10:00", "{h?}"), "");
   equals(interval("000 05:00:00", "{h?}"), "5");
   equals(interval("001 00:00:00", "{h?}"), "0");
   // optional suffix
@@ -213,6 +238,8 @@ test("combinations", function() {
   equals(interval("000 00:12:00", "{HH?:}{mm}"), "12");
   
   equals(interval("000 05:12:00", "{hours} and {minutes"), "5 hours and ?");
+  
+  equals(interval("000 23:59:00", "{Days} {hours}"), "1 day 0 hours");
 });
 
 test("localization", function() {
