@@ -67,7 +67,10 @@ var jintervals = (function() {
       }
       
       return {
-        type: matches[1].replace("g", "G"),
+        // single-letter uppercase name of the type
+        type: matches[1].toUpperCase(),
+        // when code begins with lowercase letter, then set showing limited amount to true
+        limited: (matches[1].toLowerCase() == matches[1]),
         paddingLength: (matches[2] || "").length + 1,
         format: (matches[3]||"") == "" ? false : (matches[3] == "." ? "letter" : "full"),
         optional: !!matches[4],
@@ -76,7 +79,7 @@ var jintervals = (function() {
     }
     
   };
-      
+  
   /**
    * Evaluates parse tree in the context of given time object
    */
@@ -93,11 +96,11 @@ var jintervals = (function() {
         // evaluate the code
         else if (typeof code === "object") {
           var unit = (code.type == "G") ? time.getGreatestUnit() : code.type;
-          var value = time.get(unit);
-          var suffix = code.format ? Localization.translate(code.format, unit.toLowerCase(), value) : "";
+          var value = time.get(unit, code.limited);
+          var suffix = code.format ? Localization.translate(code.format, unit, value) : "";
           
           // show when not optional or totalvalue is non-zero
-          if (!code.optional || time.get(unit.toUpperCase()) != 0) {
+          if (!code.optional || time.get(unit) != 0) {
             result += this.zeropad(value, code.paddingLength) + suffix + code.optionalSuffix;
           }
         }
@@ -134,10 +137,14 @@ var jintervals = (function() {
   };
   Time.prototype = {
     /**
-     * Returns the value of given time unit
+     * Returns the value of time in given unit
+     * 
+     * @param {String} unit  Either "S", "M", "H" or "D"
+     * @param {Boolean} limited  When true 67 seconds will become just 7 seconds (defaults to false)
      */
-    get: function(unit) {
-      switch (unit) {
+    get: function(unit, limited) {
+      var type = limited ? unit.toLowerCase() : unit.toUpperCase();
+      switch (type) {
         case "S": return this.seconds;
         case "s": return this.seconds - this.get("M") * 60;
         case "M": return Math.floor(this.get("S") / 60);
@@ -154,10 +161,10 @@ var jintervals = (function() {
      * Returns the name of greatest time unit.
      * 
      * For example when we have 2 hours, 30 minutes, and 7 seconds,
-     * then the greatest unit is hour and "h" is returned.
+     * then the greatest unit is hour and "H" is returned.
      */
     getGreatestUnit: function() {
-      return this.get("d") ? "d" : (this.get("h") ? "h" : (this.get("m") ? "m" : "s"));
+      return this.get("D") ? "D" : (this.get("H") ? "H" : (this.get("M") ? "M" : "S"));
     }
   };
   
@@ -185,16 +192,16 @@ var jintervals = (function() {
     locales: {
       en_US: {
         letter: {
-          d: "d",
-          h: "h",
-          m: "m",
-          s: "s"
+          D: "d",
+          H: "h",
+          M: "m",
+          S: "s"
         },
         full: {
-          d: [" day", " days"],
-          h: [" hour", " hours"],
-          m: [" minute", " minutes"],
-          s: [" second", " seconds"]
+          D: [" day", " days"],
+          H: [" hour", " hours"],
+          M: [" minute", " minutes"],
+          S: [" second", " seconds"]
         },
         plural: function(nr) {
           return (nr == 1) ? 0 : 1;
@@ -202,16 +209,16 @@ var jintervals = (function() {
       },
       et_EE: {
         letter: {
-          d: "p",
-          h: "h",
-          m: "m",
-          s: "s"
+          D: "p",
+          H: "h",
+          M: "m",
+          S: "s"
         },
         full: {
-          d: [" p\u00E4ev", " p\u00E4eva"],
-          h: [" tund", " tundi"],
-          m: [" minut", " minutit"],
-          s: [" sekund", " sekundit"]
+          D: [" p\u00E4ev", " p\u00E4eva"],
+          H: [" tund", " tundi"],
+          M: [" minut", " minutit"],
+          S: [" sekund", " sekundit"]
         },
         plural: function(nr) {
           return (nr == 1) ? 0 : 1;
