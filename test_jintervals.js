@@ -110,7 +110,12 @@ test("{d}", function() {
   equals(interval("001 12:00:00", "{d}"), "2");
   equals(interval("001 23:59:59", "{d}"), "2");
   equals(interval("002 00:00:00", "{d}"), "2");
-  equals(interval("365 00:00:00", "{d}"), "365");
+  equals(interval("006 11:59:59", "{d}"), "6");
+  equals(interval("006 12:00:00", "{d}"), "0");
+  equals(interval("006 23:59:59", "{d}"), "0");
+  equals(interval("007 00:00:00", "{d}"), "0");
+  equals(interval("010 00:00:00", "{d}"), "3");
+  equals(interval("007 11:00:00", "{d}"), "0");
 });
 
 test("{D}", function() {
@@ -121,6 +126,28 @@ test("{D}", function() {
   equals(interval("999 00:00:00", "{D}"), "999");
 });
 
+test("{w}", function() {
+  equals(interval("000 00:00:00", "{w}"), "0");
+  equals(interval("003 11:59:59", "{w}"), "0");
+  equals(interval("003 12:00:00", "{w}"), "1");
+  equals(interval("006 23:59:59", "{w}"), "1");
+  equals(interval("007 00:00:00", "{w}"), "1");
+  equals(interval("008 00:00:00", "{w}"), "1");
+  equals(interval("010 11:59:59", "{w}"), "1");
+  equals(interval("010 12:00:00", "{w}"), "2");
+  equals(interval("013 23:59:59", "{w}"), "2");
+  equals(interval("014 00:00:00", "{w}"), "2");
+  equals(interval("070 00:00:00", "{w}"), "10");
+});
+
+test("{W}", function() {
+  equals(interval("003 11:59:59", "{W}"), "0");
+  equals(interval("003 12:00:00", "{W}"), "1");
+  equals(interval("006 23:59:59", "{W}"), "1");
+  equals(interval("007 00:00:00", "{W}"), "1");
+  equals(interval("070 00:00:00", "{W}"), "10");
+});
+
 test("{Greatests}", function() {
   equals(interval("000 00:00:00", "{Greatests}"), "0 seconds");
   equals(interval("000 00:00:01", "{Greatests}"), "1 second");
@@ -128,14 +155,17 @@ test("{Greatests}", function() {
   equals(interval("000 00:00:59", "{Greatests}"), "59 seconds");
   equals(interval("000 00:01:00", "{Greatests}"), "1 minute");
   equals(interval("000 00:01:29", "{Greatests}"), "1 minute");
-  equals(interval("000 00:01:30", "{Greatests}"), "2 minutes");//
-  equals(interval("000 00:01:59", "{Greatests}"), "2 minutes");//
-  equals(interval("000 00:59:30", "{Greatests}"), "1 hour");//
+  equals(interval("000 00:01:30", "{Greatests}"), "2 minutes");
+  equals(interval("000 00:01:59", "{Greatests}"), "2 minutes");
+  equals(interval("000 00:59:30", "{Greatests}"), "1 hour");
   equals(interval("000 01:00:00", "{Greatests}"), "1 hour");
   equals(interval("000 23:29:59", "{Greatests}"), "23 hours");
-  equals(interval("000 23:30:00", "{Greatests}"), "1 day");//
+  equals(interval("000 23:30:00", "{Greatests}"), "1 day");
   equals(interval("001 00:00:00", "{Greatests}"), "1 day");
-  equals(interval("365 00:00:00", "{Greatests}"), "365 days");
+  equals(interval("006 11:59:59", "{Greatests}"), "6 days");
+  equals(interval("006 12:00:00", "{Greatests}"), "1 week");
+  equals(interval("007 00:00:00", "{Greatests}"), "1 week");
+  equals(interval("070 00:00:00", "{Greatests}"), "10 weeks");
   
   // check that abbreviations work
   equals(interval("000 03:00:00", "{G.}"), "3h");
@@ -148,15 +178,15 @@ test("{Greatests}", function() {
 });
 
 test("nr of decimal places", function() {
-  equals("|"+interval("001 00:00:00", "{dd}"), "|01");
-  equals("|"+interval("011 00:00:00", "{dd}"), "|11");
-  equals("|"+interval("111 00:00:00", "{dd}"), "|111");
+  equals("|"+interval("001 00:00:00", "{DD}"), "|01");
+  equals("|"+interval("011 00:00:00", "{DD}"), "|11");
+  equals("|"+interval("111 00:00:00", "{DD}"), "|111");
   
-  equals("|"+interval("001 00:00:00", "{ddd}"), "|001");
-  equals("|"+interval("011 00:00:00", "{ddd}"), "|011");
-  equals("|"+interval("111 00:00:00", "{ddd}"), "|111");
+  equals("|"+interval("001 00:00:00", "{DDD}"), "|001");
+  equals("|"+interval("011 00:00:00", "{DDD}"), "|011");
+  equals("|"+interval("111 00:00:00", "{DDD}"), "|111");
   
-  equals("|"+interval("111 00:00:00", "{dddddd}"), "|000111");
+  equals("|"+interval("111 00:00:00", "{DDDDDD}"), "|000111");
 });
 
 test("unit abbrevations", function() {
@@ -164,6 +194,7 @@ test("unit abbrevations", function() {
   equals(interval("000 00:02:00", "{m.}"), "2m");
   equals(interval("000 03:00:00", "{h.}"), "3h");
   equals(interval("004 00:00:00", "{d.}"), "4d");
+  equals(interval("007 00:00:00", "{w.}"), "1w");
 });
 
 test("unit names", function() {
@@ -171,19 +202,22 @@ test("unit names", function() {
   equals(interval("000 00:00:00", "{minutes}"), "0 minutes");
   equals(interval("000 00:00:00", "{hours}"), "0 hours");
   equals(interval("000 00:00:00", "{days}"), "0 days");
+  equals(interval("000 00:00:00", "{weeks}"), "0 weeks");
   
   equals(interval("000 00:00:01", "{seconds}"), "1 second");
   equals(interval("000 00:01:00", "{minutes}"), "1 minute");
   equals(interval("000 01:00:00", "{hours}"), "1 hour");
   equals(interval("001 00:00:00", "{days}"), "1 day");
+  equals(interval("007 00:00:00", "{weeks}"), "1 week");
   
   equals(interval("000 00:00:02", "{seconds}"), "2 seconds");
   equals(interval("000 00:02:00", "{minutes}"), "2 minutes");
   equals(interval("000 02:00:00", "{hours}"), "2 hours");
   equals(interval("002 00:00:00", "{days}"), "2 days");
+  equals(interval("014 00:00:00", "{weeks}"), "2 weeks");
 });
 
-test("unit names in plural form", function() {
+test("unit code names in singular form", function() {
   equals(interval("000 00:00:02", "{second}"), "2 seconds");
   equals(interval("000 00:02:00", "{minute}"), "2 minutes");
   equals(interval("000 02:00:00", "{hour}"), "2 hours");
@@ -240,6 +274,8 @@ test("combinations", function() {
   equals(interval("000 05:12:00", "{hours} and {minutes"), "5 hours and ?");
   
   equals(interval("000 23:59:00", "{Days} {hours}"), "1 day 0 hours");
+  
+  equals(interval("015 00:00:00", "{Weeks} and {days}"), "2 weeks and 1 day");
 });
 
 test("localization", function() {
@@ -266,6 +302,10 @@ test("estonian locale", function() {
   equals(interval("005 00:00:00", "{d.}"), "5p");
   equals(interval("001 00:00:00", "{days}"), "1 p\u00E4ev");
   equals(interval("005 00:00:00", "{days}"), "5 p\u00E4eva");
+  
+  equals(interval("007 00:00:00", "{w.}"), "1n");
+  equals(interval("007 00:00:00", "{weeks}"), "1 n\u00E4dal");
+  equals(interval("014 00:00:00", "{weeks}"), "2 n\u00E4dalat");
   jintervals.locale("en_US");
 });
 

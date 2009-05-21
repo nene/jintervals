@@ -60,7 +60,7 @@ var jintervals = (function() {
     // parses single {Code} in format string
     // Returns object representing the code or false when incorrect format string
     parseCode: function(code) {
-      var re = /^[{]([smhdg])([smhdg]*)?(ays?|ours?|inutes?|econds?|reatests?|\.)?(\?(.*))?[}]$/i;
+      var re = /^[{]([smhdwg])([smhdwg]*)?(eeks?|ays?|ours?|inutes?|econds?|reatests?|\.)?(\?(.*))?[}]$/i;
       var matches = re.exec(code);
       if (!matches) {
         return false;
@@ -125,10 +125,11 @@ var jintervals = (function() {
         "S": 0,
         "M": 1,
         "H": 2,
-        "D": 3
+        "D": 3,
+        "W": 4
       };
       
-      var smallest = "D";
+      var smallest = "W";
       for (var i = 0; i < parseTree.length; i++) {
         if (typeof parseTree[i] === "object") {
           var type = parseTree[i].type;
@@ -167,7 +168,7 @@ var jintervals = (function() {
     /**
      * Returns the value of time in given unit
      * 
-     * @param {String} unit  Either "S", "M", "H" or "D"
+     * @param {String} unit  Either "S", "M", "H", "D" or "W"
      * @param {Boolean} limited  When true 67 seconds will become just 7 seconds (defaults to false)
      * @param {String} smallest  The name of smallest unit.
      */
@@ -204,7 +205,16 @@ var jintervals = (function() {
     
     D: function(limited, smallest) {
       var days = this.H(false, smallest) / 24;
-      return (smallest === "D") ? Math.round(days): Math.floor(days);
+      days = (smallest === "D") ? Math.round(days): Math.floor(days);
+      if (limited) {
+        days = days - this.W(false, smallest) * 7;
+      }
+      return days;
+    },
+    
+    W: function(limited, smallest) {
+      var weeks = this.D(false, (smallest === "W") ? "D" : smallest) / 7;
+      return (smallest === "W") ? Math.round(weeks): Math.floor(weeks);
     },
     
     /**
@@ -223,8 +233,11 @@ var jintervals = (function() {
       else if (this.H(false, "H") < 24) {
         return "H";
       }
-      else {
+      else if (this.D(false, "D") < 7) {
         return "D";
+      }
+      else {
+        return "W";
       }
     }
   };
@@ -253,12 +266,14 @@ var jintervals = (function() {
     locales: {
       en_US: {
         letter: {
+          W: "w",
           D: "d",
           H: "h",
           M: "m",
           S: "s"
         },
         full: {
+          W: [" week", " weeks"],
           D: [" day", " days"],
           H: [" hour", " hours"],
           M: [" minute", " minutes"],
@@ -270,12 +285,14 @@ var jintervals = (function() {
       },
       et_EE: {
         letter: {
+          W: "n",
           D: "p",
           H: "h",
           M: "m",
           S: "s"
         },
         full: {
+          W: [" n\u00E4dal", " n\u00E4dalat"],
           D: [" p\u00E4ev", " p\u00E4eva"],
           H: [" tund", " tundi"],
           M: [" minut", " minutit"],
