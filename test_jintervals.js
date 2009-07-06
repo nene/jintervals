@@ -309,4 +309,33 @@ test("estonian locale", function() {
   jintervals.locale("en_US");
 });
 
+test("lithuanian locale", function() {
+  jintervals.locale("lt_LT");
+  equals(interval("000 00:00:01", "{s.}"), "1s");
+  equals(interval("000 00:00:01", "{seconds}"), "1 sekundę");
+  equals(interval("000 00:00:02", "{seconds}"), "2 sekundes");
+  equals(interval("000 00:00:10", "{seconds}"), "10 sekundžų");
+  equals(interval("000 00:00:21", "{seconds}"), "21 sekundę");
+  equals(interval("000 00:00:22", "{seconds}"), "22 sekundes");
+  
+  equals(interval("000 00:01:00", "{m.}"), "1m");
+  equals(interval("000 00:01:00", "{minutes}"), "1 minutę");
+  equals(interval("000 00:02:00", "{minutes}"), "2 minutes");
+  equals(interval("000 00:10:00", "{minutes}"), "10 minučių");
+  equals(interval("000 00:21:00", "{minutes}"), "21 minutę");
+  equals(interval("000 00:22:00", "{minutes}"), "22 minutes");
+  
+  equals(interval("000 01:00:00", "{h.}"), "1h");
+  equals(interval("000 01:00:00", "{hours}"), "1 valandą");
+  equals(interval("000 02:00:00", "{hours}"), "2 valandas");
+  equals(interval("000 10:00:00", "{hours}"), "10 valandų");
+  equals(interval("000 21:00:00", "{hours}"), "21 valandą");
+  equals(interval("000 22:00:00", "{hours}"), "22 valandas");
+  
+  equals(interval("001 00:00:00", "{D.}"), "1d");
+  equals(interval("001 00:00:00", "{Days}"), "1 dieną");
+  equals(interval("002 00:00:00", "{Days}"), "2 dienas");
+  equals(interval("010 00:00:00", "{Days}"), "10 dienų");
+  jintervals.locale("en_US");
+});
 

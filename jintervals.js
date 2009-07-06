@@ -301,6 +301,23 @@ var jintervals = (function() {
         plural: function(nr) {
           return (nr == 1) ? 0 : 1;
         }
+      },
+      lt_LT: {
+        letter: {
+          D: "d",
+          H: "h",
+          M: "m",
+          S: "s"
+        },
+        full: {
+          D: [" dieną", " dienas", " dienų"],
+          H: [" valandą", " valandas", " valandų"],
+          M: [" minutę", " minutes", " minučių"],
+          S: [" sekundę", " sekundes", " sekundžų"]
+        },
+        plural: function(n) {
+          return (n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2);
+        }
       }
     }
   };
