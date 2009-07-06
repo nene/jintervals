@@ -304,12 +304,14 @@ var jintervals = (function() {
       },
       lt_LT: {
         letter: {
+          W: "s",
           D: "d",
           H: "h",
           M: "m",
           S: "s"
         },
         full: {
+          W: [" savaitę", " savaites", " savaičių"],
           D: [" dieną", " dienas", " dienų"],
           H: [" valandą", " valandas", " valandų"],
           M: [" minutę", " minutes", " minučių"],

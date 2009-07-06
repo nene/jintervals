@@ -336,6 +336,13 @@ test("lithuanian locale", function() {
   equals(interval("001 00:00:00", "{Days}"), "1 dieną");
   equals(interval("002 00:00:00", "{Days}"), "2 dienas");
   equals(interval("010 00:00:00", "{Days}"), "10 dienų");
+  
+  equals(interval("007 00:00:00", "{W.}"), "1s");
+  equals(interval("007 00:00:00", "{Weeks}"), "1 savaitę");
+  equals(interval("014 00:00:00", "{Weeks}"), "2 savaites");
+  equals(interval("070 00:00:00", "{Weeks}"), "10 savaičių");
+  equals(interval("147 00:00:00", "{Weeks}"), "21 savaitę");
+  equals(interval("154 00:00:00", "{Weeks}"), "22 savaites");
   jintervals.locale("en_US");
 });
 
