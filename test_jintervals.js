@@ -295,3 +295,20 @@ test("lithuanian locale", function() {
   jintervals.locale("en_US");
 });
 
+test("russian locale", function() {
+  jintervals.locale("ru_RU");
+  equals(interval("000 00:00:01", "{s.}"), "1с");
+  equals(interval("000 00:00:01", "{seconds}"), "1 секунда");
+  equals(interval("000 00:00:02", "{seconds}"), "2 секунды");
+  equals(interval("000 00:00:03", "{seconds}"), "3 секунды");
+  equals(interval("000 00:00:04", "{seconds}"), "4 секунды");
+  equals(interval("000 00:00:05", "{seconds}"), "5 секунд");
+  equals(interval("000 00:00:06", "{seconds}"), "6 секунд");
+  equals(interval("000 00:00:07", "{seconds}"), "7 секунд");
+  equals(interval("000 00:00:08", "{seconds}"), "8 секунд");
+  equals(interval("000 00:00:09", "{seconds}"), "9 секунд");
+  equals(interval("000 00:00:10", "{seconds}"), "10 секунд");
+  equals(interval("000 00:00:11", "{seconds}"), "11 секунд");
+  equals(interval("000 00:00:21", "{seconds}"), "21 секунда");
+  jintervals.locale("en_US");
+});
