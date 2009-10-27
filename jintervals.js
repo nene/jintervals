@@ -318,6 +318,23 @@ var jintervals = (function() {
         plural: function(n) {
           return (n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);
         }
+      },
+      fi_FI: {
+        letter: {
+          D: "p",
+          H: "h",
+          M: "m",
+          S: "s"
+        },
+        full: {
+          D: [" päivä", " päivää"],
+          H: [" tunti", " tuntia"],
+          M: [" minuutti", " minuuttia"],
+          S: [" sekunti", " sekunttia"]
+        },
+        plural: function(nr) {
+          return (nr == 1) ? 0 : 1;
+        }
       }
     }
   };
