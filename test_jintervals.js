@@ -240,6 +240,9 @@ test("combinations", function() {
   equals(interval("000 05:12:00", "{hours} and {minutes"), "5 hours and ?");
   
   equals(interval("000 23:59:00", "{Days} {hours}"), "1 day 0 hours");
+  
+  equals(interval("000 00:59:29", "{H.? }{mm.}"), "59m");
+  equals(interval("000 00:59:30", "{H.? }{mm.}"), "1h 00m");
 });
 
 test("localization", function() {

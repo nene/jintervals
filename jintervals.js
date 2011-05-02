@@ -164,17 +164,21 @@ var jintervals = (function() {
     this.seconds = s;
   };
   Time.prototype = {
+    nextUnit: {D: "H", H: "M", M: "S", S: "S"},
+    
     /**
      * Returns the value of time in given unit
      * 
      * @param {String} unit  Either "S", "M", "H" or "D"
      * @param {Boolean} limited  When true 67 seconds will become just 7 seconds (defaults to false)
-     * @param {String} smallest  The name of smallest unit.
+     * @param {String} smallest  The name of smallest unit.  Defaults to next unit.
+     * For example for "D" it will be "H", for "H" it will be "M" and so on...
      */
     get: function(unit, limited, smallest) {
       if (!this[unit]) {
         return "?";
       }
+      smallest = smallest || this.nextUnit[unit];
       return this[unit](limited, smallest);
     },
     
@@ -343,6 +347,7 @@ var jintervals = (function() {
   jintervals.locale = function(loc) {
     return Localization.locale(loc);
   };
+  jintervals.Time = Time;
   
   return jintervals;
 })();
