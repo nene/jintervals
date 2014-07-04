@@ -10,7 +10,8 @@ JavaScript library.  Only the development testsuite uses jQuery and
 QUnit.
 
 jintervals is **localized**.  It currently supports English, Russian,
-Lithuanian, Finnish and Estonian, plus you can easily add your own.
+Ukrainian, Lithuanian, Finnish and Estonian, plus you can easily add
+your own.
 
 
 ## Examples
