@@ -21,7 +21,7 @@
 
 // helper function for testing
 function interval(time, format) {
-  var                    d=1,    h=2,   m=3,   s=4;
+  var d=1, h=2, m=3, s=4;
   var t = time.match(/^(\d\d\d) (\d\d):(\d\d):(\d\d)$/);
   var seconds = t[s]*1 + t[m]*60 + t[h]*60*60 + t[d]*60*60*24;
   return jintervals(seconds, format);
@@ -128,12 +128,12 @@ test("{Greatests}", function() {
   equals(interval("000 00:00:59", "{Greatests}"), "59 seconds");
   equals(interval("000 00:01:00", "{Greatests}"), "1 minute");
   equals(interval("000 00:01:29", "{Greatests}"), "1 minute");
-  equals(interval("000 00:01:30", "{Greatests}"), "2 minutes");//
-  equals(interval("000 00:01:59", "{Greatests}"), "2 minutes");//
-  equals(interval("000 00:59:30", "{Greatests}"), "1 hour");//
+  equals(interval("000 00:01:30", "{Greatests}"), "2 minutes");
+  equals(interval("000 00:01:59", "{Greatests}"), "2 minutes");
+  equals(interval("000 00:59:30", "{Greatests}"), "1 hour");
   equals(interval("000 01:00:00", "{Greatests}"), "1 hour");
   equals(interval("000 23:29:59", "{Greatests}"), "23 hours");
-  equals(interval("000 23:30:00", "{Greatests}"), "1 day");//
+  equals(interval("000 23:30:00", "{Greatests}"), "1 day");
   equals(interval("001 00:00:00", "{Greatests}"), "1 day");
   equals(interval("365 00:00:00", "{Greatests}"), "365 days");
   
