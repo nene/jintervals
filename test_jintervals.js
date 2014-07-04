@@ -315,3 +315,27 @@ test("russian locale", function() {
   equals(interval("000 00:00:21", "{seconds}"), "21 секунда");
   jintervals.locale("en_US");
 });
+
+test("ukrainian locale", function() {
+  jintervals.locale("uk_UA");
+  equals(interval("000 00:00:01", "{s.}"), "1с");
+  equals(interval("000 00:00:01", "{seconds}"), "1 секунда");
+  equals(interval("000 00:00:03", "{seconds}"), "3 секунди");
+  equals(interval("000 00:00:09", "{seconds}"), "9 секунд");
+  
+  equals(interval("000 00:01:00", "{m.}"), "1х");
+  equals(interval("000 00:01:00", "{minutes}"), "1 хвилина");
+  equals(interval("000 00:03:00", "{minutes}"), "3 хвилини");
+  equals(interval("000 00:09:00", "{minutes}"), "9 хвилин");
+  
+  equals(interval("000 01:00:00", "{h.}"), "1г");
+  equals(interval("000 01:00:00", "{hours}"), "1 година");
+  equals(interval("000 03:00:00", "{hours}"), "3 години");
+  equals(interval("000 09:00:00", "{hours}"), "9 годин");
+
+  equals(interval("001 00:00:00", "{d.}"), "1д");
+  equals(interval("001 00:00:00", "{days}"), "1 день");
+  equals(interval("003 00:00:00", "{days}"), "3 дні");
+  equals(interval("009 00:00:00", "{days}"), "9 днів");
+  jintervals.locale("en_US");
+});
