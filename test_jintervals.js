@@ -21,7 +21,7 @@
 
 // helper function for testing
 function interval(time, format) {
-  var                    d=1,    h=2,   m=3,   s=4;
+  var d=1, h=2, m=3, s=4;
   var t = time.match(/^(\d\d\d) (\d\d):(\d\d):(\d\d)$/);
   var seconds = t[s]*1 + t[m]*60 + t[h]*60*60 + t[d]*60*60*24;
   return jintervals(seconds, format);
@@ -128,12 +128,12 @@ test("{Greatests}", function() {
   equals(interval("000 00:00:59", "{Greatests}"), "59 seconds");
   equals(interval("000 00:01:00", "{Greatests}"), "1 minute");
   equals(interval("000 00:01:29", "{Greatests}"), "1 minute");
-  equals(interval("000 00:01:30", "{Greatests}"), "2 minutes");//
-  equals(interval("000 00:01:59", "{Greatests}"), "2 minutes");//
-  equals(interval("000 00:59:30", "{Greatests}"), "1 hour");//
+  equals(interval("000 00:01:30", "{Greatests}"), "2 minutes");
+  equals(interval("000 00:01:59", "{Greatests}"), "2 minutes");
+  equals(interval("000 00:59:30", "{Greatests}"), "1 hour");
   equals(interval("000 01:00:00", "{Greatests}"), "1 hour");
   equals(interval("000 23:29:59", "{Greatests}"), "23 hours");
-  equals(interval("000 23:30:00", "{Greatests}"), "1 day");//
+  equals(interval("000 23:30:00", "{Greatests}"), "1 day");
   equals(interval("001 00:00:00", "{Greatests}"), "1 day");
   equals(interval("365 00:00:00", "{Greatests}"), "365 days");
   
@@ -313,5 +313,29 @@ test("russian locale", function() {
   equals(interval("000 00:00:10", "{seconds}"), "10 секунд");
   equals(interval("000 00:00:11", "{seconds}"), "11 секунд");
   equals(interval("000 00:00:21", "{seconds}"), "21 секунда");
+  jintervals.locale("en_US");
+});
+
+test("ukrainian locale", function() {
+  jintervals.locale("uk_UA");
+  equals(interval("000 00:00:01", "{s.}"), "1с");
+  equals(interval("000 00:00:01", "{seconds}"), "1 секунда");
+  equals(interval("000 00:00:03", "{seconds}"), "3 секунди");
+  equals(interval("000 00:00:09", "{seconds}"), "9 секунд");
+  
+  equals(interval("000 00:01:00", "{m.}"), "1х");
+  equals(interval("000 00:01:00", "{minutes}"), "1 хвилина");
+  equals(interval("000 00:03:00", "{minutes}"), "3 хвилини");
+  equals(interval("000 00:09:00", "{minutes}"), "9 хвилин");
+  
+  equals(interval("000 01:00:00", "{h.}"), "1г");
+  equals(interval("000 01:00:00", "{hours}"), "1 година");
+  equals(interval("000 03:00:00", "{hours}"), "3 години");
+  equals(interval("000 09:00:00", "{hours}"), "9 годин");
+
+  equals(interval("001 00:00:00", "{d.}"), "1д");
+  equals(interval("001 00:00:00", "{days}"), "1 день");
+  equals(interval("003 00:00:00", "{days}"), "3 дні");
+  equals(interval("009 00:00:00", "{days}"), "9 днів");
   jintervals.locale("en_US");
 });
