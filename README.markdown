@@ -13,6 +13,8 @@ jintervals is **localized**.  It currently supports English, Russian,
 Ukrainian, Lithuanian, Finnish and Estonian, plus you can easily add
 your own.
 
+jintervals is cross-licensed under MIT and LGPL.
+
 
 ## Examples
 
@@ -28,4 +30,3 @@ Hiding of zero values:
 Full and abbreviated unit names:
 
     jintervals(75, "{Minutes} and {s.}"); --> 1 minute and 15s
-
